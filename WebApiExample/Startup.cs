@@ -20,7 +20,7 @@ namespace WebApiExample
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddControllers();
-			services.AddSingleton<IMessagesQueue>(new MessagesQueue());
+			services.AddSingleton<IMessagesQueue, MessagesQueue>();
 
 			services.AddSwaggerGen(c =>
 			{

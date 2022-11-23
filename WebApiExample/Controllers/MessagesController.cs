@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using WebApiExample.Messages;
+using WebApiExample.Dal;
+using WebApiExample.Domain;
+using WebApiExample.Dto;
 
 namespace WebApiExample.Controllers
 {

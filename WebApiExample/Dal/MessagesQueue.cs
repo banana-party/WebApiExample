@@ -1,7 +1,8 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
+using WebApiExample.Domain;
 
-namespace WebApiExample.Messages
+namespace WebApiExample.Dal
 {
     public class MessagesQueue : IMessagesQueue
     {

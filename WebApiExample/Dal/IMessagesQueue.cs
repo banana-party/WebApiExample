@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using WebApiExample.Domain;
 
-namespace WebApiExample.Messages
+namespace WebApiExample.Dal
 {
 	public interface IMessagesQueue
 	{

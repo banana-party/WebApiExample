@@ -15,22 +15,16 @@ namespace WebApiExample.Controllers
 		}
 
 		[HttpPost]
-		public IActionResult AddMessages(string subject, string body, IEnumerable<long> recipients)
+		public IActionResult AddMessages([FromBody] AddMessagesRequest request)
 		{
-			_messagesQueue.AddMessages(recipients, new Message(subject,	body));
-			return Ok();
+			_messagesQueue.AddMessages(request.Recipients, new Message(request.Subject, request.Body));
+			return Created(string.Empty, request);
 		}
 
 		[HttpGet]
 		public IActionResult GetMessages(long userId)
 		{
 			return Ok(_messagesQueue.GetMessage(userId));
-		}
-
-		[HttpGet]
-		public IActionResult GetMessages(long userId, int take)
-		{
-			return Ok(_messagesQueue.GetMessages(userId, take));
 		}
 	}
 }

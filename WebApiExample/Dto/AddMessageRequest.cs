@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using WebApiExample.Domain;
 
 namespace WebApiExample.Dto
 {
-	public class AddMessagesRequest
+	public class AddMessageRequest
 	{
-		public IEnumerable<Message> Messages { get; set; }
+		public string Subject { get; set; }
+		public string Body { get; set; }
 		public IEnumerable<long> Recipients { get; set; }
 	}
 }

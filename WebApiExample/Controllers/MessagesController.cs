@@ -15,17 +15,36 @@ namespace WebApiExample.Controllers
 			_messagesQueue = messagesQueue;
 		}
 
-		[HttpPost]
-		public IActionResult AddMessages([FromBody] AddMessagesRequest request)
+		[HttpPost("AddMessage")]
+		public IActionResult AddMessage([FromBody] AddMessageRequest request)
 		{
-			_messagesQueue.AddMessages(request.Recipients, new Message(request.Subject, request.Body));
+			if (request is null || request.Body is null || request.Recipients is null || request.Subject is null)
+				return BadRequest();
+
+			_messagesQueue.AddMessage(request.Recipients, new Message(request.Subject, request.Body));
 			return Created(string.Empty, request);
 		}
 
-		[HttpGet]
-		public IActionResult GetMessages(long userId)
+		[HttpPost("AddMessages")]
+		public IActionResult AddMessages([FromBody] AddMessagesRequest request)
+		{
+			if (request is null || request.Messages is null || request.Recipients is null)
+				return BadRequest();
+
+			_messagesQueue.AddMessages(request.Recipients, request.Messages);
+			return Created(string.Empty, request);
+		}
+
+		[HttpGet("GetMessage")]
+		public IActionResult GetMessage(long userId)
 		{
 			return Ok(_messagesQueue.GetMessage(userId));
+		}
+
+		[HttpGet("GetMessages")]
+		public IActionResult GetMessages(long userId, int take)
+		{
+			return Ok(_messagesQueue.GetMessages(userId, take));
 		}
 	}
 }

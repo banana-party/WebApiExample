@@ -27,9 +27,7 @@ namespace WebApiExample.Dal
 		public void AddMessages(IEnumerable<long> userIds, IEnumerable<Message> messages)
 		{
 			foreach (var message in messages)
-			{
-				AddMessage(userIds, message);
-			}
+				AddMessage(userIds, message);			
 		}
 
 		public Message GetMessage(long userId)

@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using WebApiExample.Dal;
 using WebApiExample.Domain;
 using WebApiExample.Dto;
@@ -16,21 +18,15 @@ namespace WebApiExample.Controllers
 		}
 
 		[HttpPost("AddMessage")]
-		public IActionResult AddMessage([FromBody] AddMessageRequest request)
+		public IActionResult AddMessage([FromBody][Required] AddMessageRequest request)
 		{
-			if (request is null || request.Body is null || request.Recipients is null || request.Subject is null)
-				return BadRequest();
-
 			_messagesQueue.AddMessage(request.Recipients, new Message(request.Subject, request.Body));
 			return Created(string.Empty, request);
 		}
 
 		[HttpPost("AddMessages")]
-		public IActionResult AddMessages([FromBody] AddMessagesRequest request)
+		public IActionResult AddMessages([FromBody][Required] AddMessagesRequest request)
 		{
-			if (request is null || request.Messages is null || request.Recipients is null)
-				return BadRequest();
-
 			_messagesQueue.AddMessages(request.Recipients, request.Messages);
 			return Created(string.Empty, request);
 		}
@@ -38,13 +34,15 @@ namespace WebApiExample.Controllers
 		[HttpGet("GetMessage")]
 		public IActionResult GetMessage(long userId)
 		{
-			return Ok(_messagesQueue.GetMessage(userId));
+			var message = new GetMessageResponse() { Message = _messagesQueue.GetMessage(userId) };
+			return message.Message != null ? Ok(message) : NotFound("There are no messages for this user");
 		}
 
 		[HttpGet("GetMessages")]
 		public IActionResult GetMessages(long userId, int take)
 		{
-			return Ok(_messagesQueue.GetMessages(userId, take));
+			var messages = new GetMessagesResponse() { Messages = _messagesQueue.GetMessages(userId, take) };
+			return messages.Messages.Any() ? Ok(messages) : NotFound("There are no messages for this user");
 		}
 	}
 }
